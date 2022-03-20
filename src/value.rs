@@ -1135,7 +1135,7 @@ impl<'a> From<&'a Value> for bool {
     fn from(val: &'a Value) -> bool {
         match *val {
             Value::Bool(val) => val,
-            _ => panic!("Value is not an integer to convert."),
+            _ => panic!("Value is not a bool to convert."),
         }
     }
 }
@@ -1145,7 +1145,7 @@ impl<'a> From<&'a Value> for String {
         match val {
             Value::String(val) => val.clone(),
             Value::GeoJSON(val) => val.clone(),
-            _ => panic!("Value is not an integer to convert."),
+            _ => panic!("Value is not a string to convert."),
         }
     }
 }
@@ -1154,7 +1154,7 @@ impl<'a> From<&'a Value> for Vec<Value> {
     fn from(val: &'a Value) -> Vec<Value> {
         match val {
             Value::List(val) => val.clone(),
-            _ => panic!("Value is not an integer to convert."),
+            _ => panic!("Value is not a list to convert."),
         }
     }
 }
@@ -1163,7 +1163,7 @@ impl<'a> From<&'a Value> for Vec<u8> {
     fn from(val: &'a Value) -> Vec<u8> {
         match val {
             Value::Blob(val) => val.clone(),
-            _ => panic!("Value is not an integer to convert."),
+            _ => panic!("Value is not a blob to convert."),
         }
     }
 }
@@ -1172,7 +1172,7 @@ impl<'a> From<&'a Value> for FloatValue {
     fn from(val: &'a Value) -> FloatValue {
         match val {
             Value::Float(val) => *val,
-            _ => panic!("Value is not an integer to convert."),
+            _ => panic!("Value is not a Float to convert."),
         }
     }
 }
@@ -1181,7 +1181,7 @@ impl<'a> From<&'a Value> for f32 {
     fn from(val: &'a Value) -> f32 {
         match val {
             Value::Float(val) => f32::from(val),
-            _ => panic!("Value is not an integer to convert."),
+            _ => panic!("Value is not a Float to convert."),
         }
     }
 }
@@ -1190,7 +1190,7 @@ impl<'a> From<&'a Value> for f64 {
     fn from(val: &'a Value) -> f64 {
         match val {
             Value::Float(val) => f64::from(val),
-            _ => panic!("Value is not an integer to convert."),
+            _ => panic!("Value is not a float to convert."),
         }
     }
 }
@@ -1354,6 +1354,72 @@ impl<'a> From<&'a Value> for Option<f64> {
     fn from(val: &'a Value) -> Self {
         match val {
             Value::Float(val) => Some(f64::from(val)),
+            _ => None,
+        }
+    }
+}
+
+impl From<Vec<String>> for Value {
+    fn from(val: Vec<String>) -> Self {
+        Value::List(val.into_iter().map(Value::from).collect())
+    }
+}
+
+impl<'a> From<&'a Vec<String>> for Value {
+    fn from(val: &'a Vec<String>) -> Self {
+        Value::List(val.iter().map(Value::from).collect())
+    }
+}
+
+impl From<Option<Vec<String>>> for Value {
+    fn from(val: Option<Vec<String>>) -> Self {
+        val.map_or(
+            Value::Nil, 
+            |val| Value::List(val.into_iter().map(Value::from).collect())
+        )
+    }
+}
+
+impl<'a> From<&'a Option<Vec<String>>> for Value {
+    fn from(val: &'a Option<Vec<String>>) -> Self {
+        match val {
+            Some(val) => Value::List(val.into_iter().map(Value::from).collect()),
+            _ => Value::Nil,
+        }
+    }
+}
+
+impl From<Value> for Vec<String> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::List(val) => val.into_iter().map(String::from).collect(),
+            _ => panic!("Value is not a string list to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Vec<String> {
+    fn from(val: &'a Value) -> Self {
+        match val {
+            Value::List(val) => val.iter().map(String::from).collect(),
+            _ => panic!("Value is not a string list to convert."),
+        }
+    }
+}
+
+impl From<Value> for Option<Vec<String>> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::List(val) => Some(val.into_iter().map(String::from).collect()),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<Vec<String>> {
+    fn from(val: &'a Value) -> Self {
+        match val {
+            Value::List(val) => Some(val.iter().map(String::from).collect()),
             _ => None,
         }
     }
