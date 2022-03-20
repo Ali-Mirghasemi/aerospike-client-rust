@@ -37,7 +37,7 @@ use serde::ser::{SerializeMap, SerializeSeq};
 use serde::{Serialize, Serializer};
 
 /// Container for floating point bin values stored in the Aerospike database.
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum FloatValue {
     /// Container for single precision float values.
     F32(u32),
@@ -367,6 +367,12 @@ impl From<f64> for Value {
     }
 }
 
+impl From<FloatValue> for Value {
+    fn from(val: FloatValue) -> Value {
+        Value::Float(val)
+    }
+}
+
 impl<'a> From<&'a f32> for Value {
     fn from(val: &'a f32) -> Value {
         Value::Float(FloatValue::from(*val))
@@ -376,6 +382,12 @@ impl<'a> From<&'a f32> for Value {
 impl<'a> From<&'a f64> for Value {
     fn from(val: &'a f64) -> Value {
         Value::Float(FloatValue::from(*val))
+    }
+}
+
+impl<'a> From<&'a FloatValue> for Value {
+    fn from(val: &'a FloatValue) -> Value {
+        Value::Float(*val)
     }
 }
 
@@ -535,11 +547,545 @@ impl<'a> From<&'a bool> for Value {
     }
 }
 
+impl From<Option<i8>> for Value {
+    fn from(val: Option<i8>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<u8>> for Value {
+    fn from(val: Option<u8>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<i16>> for Value {
+    fn from(val: Option<i16>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<u16>> for Value {
+    fn from(val: Option<u16>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<i32>> for Value {
+    fn from(val: Option<i32>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<u32>> for Value {
+    fn from(val: Option<u32>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<i64>> for Value {
+    fn from(val: Option<i64>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<u64>> for Value {
+    fn from(val: Option<u64>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<isize>> for Value {
+    fn from(val: Option<isize>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<usize>> for Value {
+    fn from(val: Option<usize>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<String>> for Value {
+    fn from(val: Option<String>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<Vec<u8>>> for Value {
+    fn from(val: Option<Vec<u8>>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl From<Option<bool>> for Value {
+    fn from(val: Option<bool>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<i8>> for Value {
+    fn from(val: &'a Option<i8>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<u8>> for Value {
+    fn from(val: &'a Option<u8>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<i16>> for Value {
+    fn from(val: &'a Option<i16>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<u16>> for Value {
+    fn from(val: &'a Option<u16>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<i32>> for Value {
+    fn from(val: &'a Option<i32>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<u32>> for Value {
+    fn from(val: &'a Option<u32>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<i64>> for Value {
+    fn from(val: &'a Option<i64>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<isize>> for Value {
+    fn from(val: &'a Option<isize>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<usize>> for Value {
+    fn from(val: &'a Option<usize>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<bool>> for Value {
+    fn from(val: &'a Option<bool>) -> Self {
+        val.map_or(Value::Nil, Value::from)
+    }
+}
+
+impl<'a> From<&'a Option<String>> for Value {
+    fn from(val: &'a Option<String>) -> Self {
+        match val {
+            Some(val) => Value::from(val.clone()),
+            _ => Value::Nil,
+        }
+    }
+}
+
+impl<'a> From<&'a Option<Vec<u8>>> for Value {
+    fn from(val: &'a Option<Vec<u8>>) -> Self {
+        match val {
+            Some(val) => Value::from(val.clone()),
+            _ => Value::Nil,
+        }
+    }
+}
+
+impl From<Value> for i8 {
+    fn from(val: Value) -> i8 {
+        match val {
+            Value::Int(val) => val as i8,
+            Value::UInt(val) => val as i8,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for u8 {
+    fn from(val: Value) -> u8 {
+        match val {
+            Value::Int(val) => val as u8,
+            Value::UInt(val) => val as u8,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for i16 {
+    fn from(val: Value) -> i16 {
+        match val {
+            Value::Int(val) => val as i16,
+            Value::UInt(val) => val as i16,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for u16 {
+    fn from(val: Value) -> u16 {
+        match val {
+            Value::Int(val) => val as u16,
+            Value::UInt(val) => val as u16,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for i32 {
+    fn from(val: Value) -> i32 {
+        match val {
+            Value::Int(val) => val as i32,
+            Value::UInt(val) => val as i32,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for u32 {
+    fn from(val: Value) -> u32 {
+        match val {
+            Value::Int(val) => val as u32,
+            Value::UInt(val) => val as u32,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
 impl From<Value> for i64 {
     fn from(val: Value) -> i64 {
         match val {
             Value::Int(val) => val,
             Value::UInt(val) => val as i64,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for u64 {
+    fn from(val: Value) -> u64 {
+        match val {
+            Value::Int(val) => val as u64,
+            Value::UInt(val) => val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for isize {
+    fn from(val: Value) -> isize {
+        match val {
+            Value::Int(val) => val as isize,
+            Value::UInt(val) => val as isize,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for usize {
+    fn from(val: Value) -> usize {
+        match val {
+            Value::Int(val) => val as usize,
+            Value::UInt(val) => val as usize,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for bool {
+    fn from(val: Value) -> bool {
+        match val {
+            Value::Bool(val) => val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for String {
+    fn from(val: Value) -> String {
+        match val {
+            Value::String(val) => val,
+            Value::GeoJSON(val) => val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for Vec<Value> {
+    fn from(val: Value) -> Vec<Value> {
+        match val {
+            Value::List(val) => val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for Vec<u8> {
+    fn from(val: Value) -> Vec<u8> {
+        match val {
+            Value::Blob(val) => val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for FloatValue {
+    fn from(val: Value) -> FloatValue {
+        match val {
+            Value::Float(val) => val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for f32 {
+    fn from(val: Value) -> f32 {
+        match val {
+            Value::Float(val) => f32::from(val),
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for f64 {
+    fn from(val: Value) -> f64 {
+        match val {
+            Value::Float(val) => f64::from(val),
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl From<Value> for Option<i8> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as i8),
+            Value::UInt(val) => Some(val as i8),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<u8> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as u8),
+            Value::UInt(val) => Some(val as u8),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<i16> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as i16),
+            Value::UInt(val) => Some(val as i16),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<u16> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as u16),
+            Value::UInt(val) => Some(val as u16),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<i32> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as i32),
+            Value::UInt(val) => Some(val as i32),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<u32> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as u32),
+            Value::UInt(val) => Some(val as u32),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<i64> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val),
+            Value::UInt(val) => Some(val as i64),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<u64> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as u64),
+            Value::UInt(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<isize> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as isize),
+            Value::UInt(val) => Some(val as isize),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<usize> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Int(val) => Some(val as usize),
+            Value::UInt(val) => Some(val as usize),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<bool> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Bool(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<String> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::String(val) => Some(val),
+            Value::GeoJSON(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<Vec<u8>> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Blob(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<Vec<Value>> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::List(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<FloatValue> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Float(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<f32> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Float(val) => Some(f32::from(val)),
+            _ => None,
+        }
+    }
+}
+
+impl From<Value> for Option<f64> {
+    fn from(val: Value) -> Self {
+        match val {
+            Value::Float(val) => Some(f64::from(val)),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for i8 {
+    fn from(val: &'a Value) -> i8 {
+        match *val {
+            Value::Int(val) => val as i8,
+            Value::UInt(val) => val as i8,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for u8 {
+    fn from(val: &'a Value) -> u8 {
+        match *val {
+            Value::Int(val) => val as u8,
+            Value::UInt(val) => val as u8,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for i16 {
+    fn from(val: &'a Value) -> i16 {
+        match *val {
+            Value::Int(val) => val as i16,
+            Value::UInt(val) => val as i16,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for u16 {
+    fn from(val: &'a Value) -> u16 {
+        match *val {
+            Value::Int(val) => val as u16,
+            Value::UInt(val) => val as u16,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for i32 {
+    fn from(val: &'a Value) -> i32 {
+        match *val {
+            Value::Int(val) => val as i32,
+            Value::UInt(val) => val as i32,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for u32 {
+    fn from(val: &'a Value) -> u32 {
+        match *val {
+            Value::Int(val) => val as u32,
+            Value::UInt(val) => val as u32,
             _ => panic!("Value is not an integer to convert."),
         }
     }
@@ -551,6 +1097,264 @@ impl<'a> From<&'a Value> for i64 {
             Value::Int(val) => val,
             Value::UInt(val) => val as i64,
             _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for u64 {
+    fn from(val: &'a Value) -> u64 {
+        match *val {
+            Value::Int(val) => val as u64,
+            Value::UInt(val) => val as u64,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for isize {
+    fn from(val: &'a Value) -> isize {
+        match *val {
+            Value::Int(val) => val as isize,
+            Value::UInt(val) => val as isize,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for usize {
+    fn from(val: &'a Value) -> usize {
+        match *val {
+            Value::Int(val) => val as usize,
+            Value::UInt(val) => val as usize,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for bool {
+    fn from(val: &'a Value) -> bool {
+        match *val {
+            Value::Bool(val) => val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for String {
+    fn from(val: &'a Value) -> String {
+        match val {
+            Value::String(val) => val.clone(),
+            Value::GeoJSON(val) => val.clone(),
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Vec<Value> {
+    fn from(val: &'a Value) -> Vec<Value> {
+        match val {
+            Value::List(val) => val.clone(),
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Vec<u8> {
+    fn from(val: &'a Value) -> Vec<u8> {
+        match val {
+            Value::Blob(val) => val.clone(),
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for FloatValue {
+    fn from(val: &'a Value) -> FloatValue {
+        match val {
+            Value::Float(val) => *val,
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for f32 {
+    fn from(val: &'a Value) -> f32 {
+        match val {
+            Value::Float(val) => f32::from(val),
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for f64 {
+    fn from(val: &'a Value) -> f64 {
+        match val {
+            Value::Float(val) => f64::from(val),
+            _ => panic!("Value is not an integer to convert."),
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<i8> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as i8),
+            Value::UInt(val) => Some(val as i8),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<u8> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as u8),
+            Value::UInt(val) => Some(val as u8),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<i16> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as i16),
+            Value::UInt(val) => Some(val as i16),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<u16> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as u16),
+            Value::UInt(val) => Some(val as u16),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<i32> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as i32),
+            Value::UInt(val) => Some(val as i32),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<u32> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as u32),
+            Value::UInt(val) => Some(val as u32),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<i64> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val),
+            Value::UInt(val) => Some(val as i64),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<u64> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as u64),
+            Value::UInt(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<isize> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as isize),
+            Value::UInt(val) => Some(val as isize),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<usize> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Int(val) => Some(val as usize),
+            Value::UInt(val) => Some(val as usize),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<bool> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Bool(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<String> {
+    fn from(val: &'a Value) -> Self {
+        match val {
+            Value::String(val) => Some(val.clone()),
+            Value::GeoJSON(val) => Some(val.clone()),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<Vec<u8>> {
+    fn from(val: &'a Value) -> Self {
+        match val {
+            Value::Blob(val) => Some(val.clone()),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<Vec<Value>> {
+    fn from(val: &'a Value) -> Self {
+        match val {
+            Value::List(val) => Some(val.clone()),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<FloatValue> {
+    fn from(val: &'a Value) -> Self {
+        match *val {
+            Value::Float(val) => Some(val),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<f32> {
+    fn from(val: &'a Value) -> Self {
+        match val {
+            Value::Float(val) => Some(f32::from(val)),
+            _ => None,
+        }
+    }
+}
+
+impl<'a> From<&'a Value> for Option<f64> {
+    fn from(val: &'a Value) -> Self {
+        match val {
+            Value::Float(val) => Some(f64::from(val)),
+            _ => None,
         }
     }
 }
