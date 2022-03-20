@@ -193,6 +193,7 @@ mod record;
 mod result_code;
 pub mod task;
 mod user;
+pub mod entity;
 
 #[cfg(test)]
 extern crate hex;
