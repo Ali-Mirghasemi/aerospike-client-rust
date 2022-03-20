@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+* **Compatibility**
+  * Add ```From``` trait for ```Option<T>``` in both direction. by [Ali Mirghasemi](https://github.com/ali-mirghasemi)
+  * Add ```From``` trait for string array ```Vec<String>``` in both direction. by [Ali Mirghasemi](https://github.com/ali-mirghasemi)
+  * Add ```From``` trait for all possible rust data types in both direction. by [Ali Mirghasemi](https://github.com/ali-mirghasemi)
 
 ## [1.2.0] - 2021-10-22
 
