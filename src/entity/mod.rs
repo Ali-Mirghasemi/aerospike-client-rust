@@ -17,4 +17,5 @@ pub mod key;
 pub mod bins;
 pub mod set;
 pub mod from_record;
-pub mod entity_operator;
+pub mod entity;
+pub mod entity_client;
