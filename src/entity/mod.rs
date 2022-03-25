@@ -13,9 +13,17 @@
 // License for the specific language governing permissions and limitations under
 // the License.
 
-pub mod key;
-pub mod bins;
-pub mod set;
-pub mod from_record;
-pub mod entity;
-pub mod entity_client;
+mod key;
+mod bins;
+mod set;
+mod from_record;
+mod entity;
+mod entity_client;
+
+pub use key::*;
+pub use bins::*;
+pub use set::*;
+pub use from_record::*;
+pub use entity::*;
+pub use entity_client::*;
+
