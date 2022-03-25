@@ -19,6 +19,19 @@ The current release supports Aerospike version v5.6 and later. Take a look at th
 - [Tests](#Tests)
 - [Benchmarks](#Benchmarks)
 
+<a name="Import"></a>
+## Import
+
+For import aerospike client you can add following code in ```Cargo.toml```
+```
+aerospike = "1.2.0
+```
+For access to derive features use following code
+```
+aerospike = { version = "1.2.0", features = ["derive"] }
+```
+
+
 <a name="Usage"></a>
 ## Usage:
 
@@ -77,6 +90,18 @@ fn main() {
 
     println!("total time: {:?}", now.elapsed());
 }
+```
+
+<a name="Examples"></a>
+## Examples
+
+For more examples you can clone repository and run following commands for run examples
+```
+cargo run --example <example-name>
+```
+Ex:
+```
+cargo run --example basic
 ```
 
 <a name="Limitations"></a>
