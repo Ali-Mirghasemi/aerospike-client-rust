@@ -151,3 +151,18 @@ impl<'a, T: Entity<'a>> AsRef<Client> for EntityClient<'a, T> {
         &self.inner
     }
 }
+
+impl<'a, T: Entity<'a>> From<Client> for EntityClient<'a, T> {
+    fn from(inner: Client) -> Self {
+        Self {
+            inner,
+            entity: PhantomData,
+        }
+    }
+}
+
+impl<'a, T: Entity<'a>> From<EntityClient<'a, T>> for Client {
+    fn from(client: EntityClient<'a, T>) -> Self {
+        client.inner
+    }
+}
