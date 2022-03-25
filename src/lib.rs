@@ -197,3 +197,10 @@ pub mod entity;
 
 #[cfg(test)]
 extern crate hex;
+
+
+#[cfg(feature = "derive")]
+extern crate aerospike_derive;
+
+#[cfg(feature = "derive")]
+pub use aerospike_derive::*;
