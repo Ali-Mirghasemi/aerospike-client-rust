@@ -2,3 +2,5 @@
 /Cargo.lock
 *.todo
 
+.vscode/
+tools/aerospike_derive/target/
