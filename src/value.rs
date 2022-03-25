@@ -331,6 +331,18 @@ impl fmt::Display for Value {
     }
 }
 
+impl Default for Value {
+    fn default() -> Self {
+        Value::Nil
+    }
+}
+
+impl Default for &Value {
+    fn default() -> &'static Value {
+        &Value::Nil
+    }
+}
+
 impl From<String> for Value {
     fn from(val: String) -> Value {
         Value::String(val)

@@ -126,6 +126,26 @@ impl<'a> From<[&'a str; 6]> for Bins {
     }
 }
 
+impl<'a> From<Bin<'a>> for Bins {
+    fn from(bins: Bin<'a>) -> Self {
+        Bins::Some(vec![bins.name.to_owned()])
+    }
+}
+
+impl<'a> From<Vec<Bin<'a>>> for Bins {
+    fn from(bins: Vec<Bin<'a>>) -> Self {
+        let bins = bins.into_iter().map(|x| String::from(x.name)).collect();
+        Bins::Some(bins)
+    }
+}
+
+impl<'a> From<&'a Vec<Bin<'a>>> for Bins {
+    fn from(bins: &'a Vec<Bin<'a>>) -> Self {
+        let bins = bins.clone().into_iter().map(|x| String::from(x.name)).collect();
+        Bins::Some(bins)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{Bins, From};
