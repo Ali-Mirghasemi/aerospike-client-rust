@@ -6,14 +6,13 @@ use std::sync::Arc;
 use std::time::Instant;
 use std::thread;
 
-use aerospike::entity::bins::IntoBins;
-use aerospike::entity::entity::Entity;
-use aerospike::entity::entity_client::EntityClient;
-use aerospike::entity::from_record::FromRecord;
-use aerospike::entity::key::IntoKey;
-use aerospike::entity::set::Set;
-use aerospike::{Bins, Client, ClientPolicy, ReadPolicy, WritePolicy, Key, Bin, Record, Value};
-use aerospike::operations;
+use aerospike::entity::IntoBins;
+use aerospike::entity::Entity;
+use aerospike::entity::EntityClient;
+use aerospike::entity::FromRecord;
+use aerospike::entity::IntoKey;
+use aerospike::entity::Set;
+use aerospike::{ClientPolicy, ReadPolicy, WritePolicy, Key, Bin, Record, Value};
 
 #[derive(Debug, Clone, Default)]
 struct UserModel {
@@ -87,7 +86,7 @@ impl<'a> Entity<'a> for UserModel {}
 fn main() {
     let cpolicy = ClientPolicy::default();
     let hosts = env::var("AEROSPIKE_HOSTS")
-        .unwrap_or(String::from("193.141.64.172:3000"));
+        .unwrap_or(String::from("127.0.0.1:3000"));
     let client: EntityClient<UserModel> = EntityClient::new(&cpolicy, &hosts)
         .expect("Failed to connect to cluster");
     let client = Arc::new(client);
