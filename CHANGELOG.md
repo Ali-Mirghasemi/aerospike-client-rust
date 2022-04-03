@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [1.3.0] - 2022-04-03
 * **New Feature**
   * Add ```Entity``` trait for more flexibility for change between Models and Records
   * Add ```EntityClient``` a client wrapper for flexibility

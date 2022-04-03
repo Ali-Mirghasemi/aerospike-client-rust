@@ -24,11 +24,11 @@ The current release supports Aerospike version v5.6 and later. Take a look at th
 
 For import aerospike client you can add following code in ```Cargo.toml```
 ```
-aerospike = "1.2.0
+aerospike = "1.3.0
 ```
 For access to derive features use following code
 ```
-aerospike = { version = "1.2.0", features = ["derive"] }
+aerospike = { version = "1.3.0", features = ["derive"] }
 ```
 
 
