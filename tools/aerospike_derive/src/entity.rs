@@ -1,14 +1,14 @@
-use proc_macro2::{TokenStream, Ident};
+use proc_macro2::{TokenStream};
 use syn::{DeriveInput, Data, Fields};
 use quote::quote;
 
-use crate::internals::{context::Context, container::{self, Container}, field::Field};
+use crate::internals::{context::Context, container::Container, field::Field};
 
 
 
 pub fn expand_derive_entity(input: &mut DeriveInput) -> Result<TokenStream, Vec<syn::Error>> {
     let mut ctx = Context::new();
-    let mut cont = Container::from_ast(&ctx, input);
+    let cont = Container::from_ast(&ctx, input);
     let mut tokens = TokenStream::default();
     
     match &input.data {
@@ -55,8 +55,22 @@ pub fn expand_derive_entity(input: &mut DeriveInput) -> Result<TokenStream, Vec<
 pub fn expand_derive_set(cont: &Container) -> TokenStream {
     let ident = cont.ident.clone();
     let (impl_generics, ty_generics, where_clause) = cont.generics.split_for_impl();
-    let namespace = cont.namespace.clone();
-    let set_name = cont.set_name.clone();
+
+    let namespace: TokenStream = if let Some(path) = &cont.namespace_fn {
+        quote! { #path() }
+    } 
+    else {
+        let ns = cont.namespace.clone();
+        quote! { #ns }
+    };
+
+    let set_name: TokenStream = if let Some(path) = &cont.set_name_fn {
+        quote! { #path() }
+    } 
+    else {
+        let sn = cont.set_name.clone();
+        quote! { #sn }
+    };
 
     quote! {
         

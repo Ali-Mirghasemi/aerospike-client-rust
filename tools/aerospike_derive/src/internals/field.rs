@@ -1,7 +1,7 @@
 use quote::ToTokens;
 use syn::Meta::{NameValue, Path};
 use proc_macro2::{Ident, TokenStream};
-use syn::{FieldsNamed, Generics, Type};
+use syn::{FieldsNamed, Type};
 use syn::NestedMeta::{Lit, Meta};
 
 use crate::internals::symbol::IGNORE;
@@ -49,7 +49,7 @@ impl Field {
                 
                 match &meta_item {
                     Meta(NameValue(m)) if m.path == RENAME => {
-                        if let Ok(s) = get_lit_str(ctx, RENAME, RENAME, &m.lit) {
+                        if let Ok(s) = get_lit_str(ctx, RENAME, &m.lit) {
                             temp_field.name = s.value();
                         }
                     },
@@ -252,7 +252,7 @@ impl Fields {
         })
     }
 
-    pub fn impl_entity<'a>(&self, ctx: &'a mut Context, cont: &Container) -> Result<TokenStream, &'a Context> {
+    pub fn impl_entity<'a>(&self, _ctx: &'a mut Context, cont: &Container) -> Result<TokenStream, &'a Context> {
         let model = cont.ident.clone();
         let (impl_generics, ty_generics, where_clause) = cont.generics.split_for_impl();    
 
