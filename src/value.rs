@@ -73,7 +73,7 @@ impl From<f64> for FloatValue {
     fn from(val: f64) -> FloatValue {
         let mut val = val;
         if val.is_nan() {
-            val = f64::NAN
+            val = f64::NAN;
         } // make all NaNs have the same representation
         FloatValue::F64(val.to_bits())
     }
@@ -83,7 +83,7 @@ impl<'a> From<&'a f64> for FloatValue {
     fn from(val: &f64) -> FloatValue {
         let mut val = *val;
         if val.is_nan() {
-            val = f64::NAN
+            val = f64::NAN;
         } // make all NaNs have the same representation
         FloatValue::F64(val.to_bits())
     }
@@ -111,7 +111,7 @@ impl From<f32> for FloatValue {
     fn from(val: f32) -> FloatValue {
         let mut val = val;
         if val.is_nan() {
-            val = f32::NAN
+            val = f32::NAN;
         } // make all NaNs have the same representation
         FloatValue::F32(val.to_bits())
     }
@@ -121,7 +121,7 @@ impl<'a> From<&'a f32> for FloatValue {
     fn from(val: &f32) -> FloatValue {
         let mut val = *val;
         if val.is_nan() {
-            val = f32::NAN
+            val = f32::NAN;
         } // make all NaNs have the same representation
         FloatValue::F32(val.to_bits())
     }
@@ -201,7 +201,7 @@ impl Hash for Value {
         match *self {
             Value::Nil => {
                 let v: Option<u8> = None;
-                v.hash(state)
+                v.hash(state);
             }
             Value::Bool(ref val) => val.hash(state),
             Value::Int(ref val) => val.hash(state),
@@ -827,8 +827,7 @@ impl From<Value> for bool {
 impl From<Value> for String {
     fn from(val: Value) -> String {
         match val {
-            Value::String(val) => val,
-            Value::GeoJSON(val) => val,
+            Value::String(val) | Value::GeoJSON(val) => val,
             _ => panic!("Value is not an integer to convert."),
         }
     }
@@ -991,8 +990,7 @@ impl From<Value> for Option<bool> {
 impl From<Value> for Option<String> {
     fn from(val: Value) -> Self {
         match val {
-            Value::String(val) => Some(val),
-            Value::GeoJSON(val) => Some(val),
+            Value::String(val) | Value::GeoJSON(val) => Some(val),
             _ => None,
         }
     }
@@ -1155,8 +1153,7 @@ impl<'a> From<&'a Value> for bool {
 impl<'a> From<&'a Value> for String {
     fn from(val: &'a Value) -> String {
         match val {
-            Value::String(val) => val.clone(),
-            Value::GeoJSON(val) => val.clone(),
+            Value::String(val) | Value::GeoJSON(val) => val.clone(),
             _ => panic!("Value is not a string to convert."),
         }
     }
@@ -1319,8 +1316,7 @@ impl<'a> From<&'a Value> for Option<bool> {
 impl<'a> From<&'a Value> for Option<String> {
     fn from(val: &'a Value) -> Self {
         match val {
-            Value::String(val) => Some(val.clone()),
-            Value::GeoJSON(val) => Some(val.clone()),
+            Value::String(val) | Value::GeoJSON(val) => Some(val.clone()),
             _ => None,
         }
     }
@@ -1395,7 +1391,7 @@ impl From<Option<Vec<String>>> for Value {
 impl<'a> From<&'a Option<Vec<String>>> for Value {
     fn from(val: &'a Option<Vec<String>>) -> Self {
         match val {
-            Some(val) => Value::List(val.into_iter().map(Value::from).collect()),
+            Some(val) => Value::List(val.iter().map(Value::from).collect()),
             _ => Value::Nil,
         }
     }
