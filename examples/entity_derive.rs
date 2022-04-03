@@ -1,5 +1,5 @@
 use aerospike::Entity;
-use aerospike::entity::EntityClient;
+use aerospike::entity::*;
 
 use std::env;
 use std::sync::Arc;
@@ -7,10 +7,9 @@ use std::time::Instant;
 use std::thread;
 
 use aerospike::{Bins, Client, ClientPolicy, ReadPolicy, WritePolicy, Key, Bin, Record, Value};
-use aerospike::entity::*;
 
 #[derive(Debug, Default, Entity)]
-#[entity(namespace = "test")]
+#[entity(namespace_fn = "get_namespace")]
 #[entity(set_name = "users")]
 struct UserModel {
     #[entity(key)]
@@ -21,6 +20,11 @@ struct UserModel {
     permissions:    Vec<String>,
     #[entity(ignore)]
     ignored:        i64,
+}
+
+// custom namespace function
+fn get_namespace() -> &'static str {
+    "test"
 }
 
 fn main() {
