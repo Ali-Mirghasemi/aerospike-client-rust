@@ -104,6 +104,7 @@ impl<'a, T: Entity<'a>> EntityClient<'a, T> {
         T::get(&self.inner, policy, key)
     }
 
+    
     pub fn get_record(&self, policy: &ReadPolicy, key: T::KeyType) -> Result<Record> {
         T::get_record(&self.inner, policy, key)
     }

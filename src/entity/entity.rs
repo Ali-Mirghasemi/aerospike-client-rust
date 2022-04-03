@@ -30,6 +30,7 @@ pub trait Entity<'a>: Set + IntoKey + IntoBins<'a> + FromRecord {
         .map(Self::from_record)
     }
 
+    /// get record for the specified entity with given key
     fn get_record(client: &Client, policy: &ReadPolicy, key: Self::KeyType) -> Result<Record> {
         client.get(
             policy, 
@@ -38,6 +39,7 @@ pub trait Entity<'a>: Set + IntoKey + IntoBins<'a> + FromRecord {
         )
     }
 
+    /// get record header for the specified entity with given key
     fn get_header(client: &Client, policy: &ReadPolicy, key: Self::KeyType) -> Result<Record> {
         client.get(
             policy, 
@@ -46,6 +48,7 @@ pub trait Entity<'a>: Set + IntoKey + IntoBins<'a> + FromRecord {
         )
     }
 
+    /// get multiple records for the specified entity with given keys
     fn batch_get(client: &Client, policy: &BatchPolicy, key: &[Self::KeyType]) -> Result<Vec<Self>> {
         let batch_reads: Vec<BatchRead> = key.into_iter().map(|x| BatchRead::new(Self::get_key(x.clone()), &Bins::All)).collect();
         client.batch_get(
@@ -69,6 +72,7 @@ pub trait Entity<'a>: Set + IntoKey + IntoBins<'a> + FromRecord {
         )
     }
 
+    /// append model into database
     fn append(client: &Client, policy: &WritePolicy, entity: &Self) -> Result<()> {
         client.append(
             policy, 

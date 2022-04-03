@@ -13,6 +13,8 @@
 // License for the specific language governing permissions and limitations under
 // the License.
 
+//! multiple traits that let user interact with database easily
+
 mod key;
 mod bins;
 mod set;
