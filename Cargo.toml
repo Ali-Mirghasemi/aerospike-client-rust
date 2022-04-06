@@ -38,7 +38,7 @@ serde = { version = "1.0", features = ["derive"], optional = true }
 aerospike_derive = { path = "tools/aerospike_derive", version = "0.1.0", optional = true }
 
 [features]
-default = ["derive"]
+default = []
 derive = ["aerospike_derive"]
 serialization = ["serde"]
 
@@ -51,6 +51,19 @@ serde_json = "1.0"
 [[bench]]
 name = "client_server"
 harness = false
+
+[[example]]
+name = "entity_derive"
+src = "examples/entity_derive.rs"
+required-features = ["derive"]
+
+[[example]]
+name = "entity"
+src = "examples/entity.rs"
+
+[[example]]
+name = "basic"
+src = "examples/basic.rs"
 
 [workspace]
 members = [
